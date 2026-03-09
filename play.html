@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MentalMath · Play</title>
+    <meta
+      name="description"
+      content="Play the MentalMath arcade challenge with a calculator keypad, combo scoring, and daily challenge mode."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell-simple">
+      <main class="app-main">
+        <header class="app-topbar card">
+          <div>
+            <p class="eyebrow">Gameplay</p>
+            <h2>Challenge mode</h2>
+            <p class="subtle">Choose a mode, start the clock, and keep the combo alive.</p>
+          </div>
+          <div class="topbar-actions">
+            <button class="secondary-button" id="quitButton" type="button">Quit</button>
+            <a class="secondary-button link-button js-feedback" href="index.html">Back to dashboard</a>
+            <div class="pill" id="dailySeedLabel">Daily challenge ready</div>
+            <button class="icon-button" id="themeToggle" type="button" aria-label="Toggle theme">🌙</button>
+            <button class="icon-button" id="soundToggle" type="button" aria-label="Toggle sound">🔊</button>
+          </div>
+        </header>
+
+        <section class="page-grid play-grid">
+          <section class="card panel controls-panel">
+            <div class="panel-heading compact">
+              <h3>Session setup</h3>
+              <p>Swap difficulty or mode before starting a fresh run.</p>
+            </div>
+
+            <div class="stack gap-md">
+              <div>
+                <p class="section-label">Difficulty</p>
+                <div class="segmented" id="difficultySelector">
+                  <button class="segment active" data-difficulty="easy" type="button">Easy</button>
+                  <button class="segment" data-difficulty="medium" type="button">Medium</button>
+                  <button class="segment" data-difficulty="hard" type="button">Hard</button>
+                </div>
+              </div>
+
+              <div>
+                <p class="section-label">Mode</p>
+                <div class="segmented two-col" id="modeSelector">
+                  <button class="segment active" data-mode="classic" type="button">Classic 60s</button>
+                  <button class="segment" data-mode="daily" type="button">Daily challenge</button>
+                </div>
+              </div>
+
+              <div class="mini-grid">
+                <article class="mini-card accent-blue">
+                  <span>Best score</span>
+                  <strong id="bestScore">0</strong>
+                </article>
+                <article class="mini-card accent-pink">
+                  <span>Daily best</span>
+                  <strong id="dailyBest">0</strong>
+                </article>
+              </div>
+
+              <button class="primary-button" id="startButton" type="button">Start challenge</button>
+
+              <div class="tips card inset">
+                <h3>Run tips</h3>
+                <ul>
+                  <li>Correct streaks increase the combo multiplier.</li>
+                  <li>Hard mode uses larger, multi-step expressions.</li>
+                  <li>Keyboard input works alongside the on-screen keypad.</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section class="card panel game-panel">
+            <div class="hud">
+              <div class="hud-item">
+                <span>Time</span>
+                <strong id="timerDisplay">60.0s</strong>
+              </div>
+              <div class="hud-item">
+                <span>Score</span>
+                <strong id="scoreDisplay">0</strong>
+              </div>
+              <div class="hud-item">
+                <span>Streak</span>
+                <strong id="streakDisplay">0</strong>
+              </div>
+              <div class="hud-item">
+                <span>Level</span>
+                <strong id="levelDisplay">1</strong>
+              </div>
+            </div>
+
+            <div class="progress-stack">
+              <div>
+                <div class="progress-meta">
+                  <span>Time pressure</span>
+                  <span id="questionCounter">0 answered</span>
+                </div>
+                <div class="progress-track"><div class="progress-fill timer-fill" id="timerFill"></div></div>
+              </div>
+              <div>
+                <div class="progress-meta">
+                  <span>Level progress</span>
+                  <span id="comboText">Combo x1.0</span>
+                </div>
+                <div class="progress-track"><div class="progress-fill xp-fill" id="xpFill"></div></div>
+              </div>
+            </div>
+
+            <div class="question-wrap">
+              <p class="question-label" id="questionLabel">Press start to begin</p>
+              <div class="question-card" id="questionCard">Ready?</div>
+              <div class="answer-display" id="answerDisplay">0</div>
+              <div class="feedback" id="feedbackMessage">Focus. Solve fast. Build a streak.</div>
+            </div>
+
+            <div class="keypad" id="keypad">
+              <button class="key action" data-action="clear" type="button">C</button>
+              <button class="key action" data-action="toggle-negative" type="button">±</button>
+              <button class="key action" data-action="backspace" type="button">⌫</button>
+
+              <button class="key" data-value="7" type="button">7</button>
+              <button class="key" data-value="8" type="button">8</button>
+              <button class="key" data-value="9" type="button">9</button>
+
+              <button class="key" data-value="4" type="button">4</button>
+              <button class="key" data-value="5" type="button">5</button>
+              <button class="key" data-value="6" type="button">6</button>
+
+              <button class="key" data-value="1" type="button">1</button>
+              <button class="key" data-value="2" type="button">2</button>
+              <button class="key" data-value="3" type="button">3</button>
+
+              <button class="key wide" data-value="0" type="button">0</button>
+              <button class="key accent submit" data-action="submit" type="button">OK</button>
+            </div>
+          </section>
+
+          <section class="stack gap-lg">
+            <article class="card panel stat-card">
+              <div class="panel-heading compact">
+                <h3>Performance</h3>
+                <p>Current run analytics.</p>
+              </div>
+              <div class="stats-grid">
+                <div>
+                  <span>Accuracy</span>
+                  <strong id="accuracyDisplay">0%</strong>
+                </div>
+                <div>
+                  <span>Avg. response</span>
+                  <strong id="avgTimeDisplay">0.0s</strong>
+                </div>
+                <div>
+                  <span>Correct</span>
+                  <strong id="correctDisplay">0</strong>
+                </div>
+                <div>
+                  <span>Best streak</span>
+                  <strong id="bestStreakDisplay">0</strong>
+                </div>
+              </div>
+            </article>
+
+            <article class="card panel leaderboard-card">
+              <div class="panel-heading compact">
+                <h3>Top runs</h3>
+                <p>Best local sessions on this device.</p>
+              </div>
+              <ol class="leaderboard-list" id="leaderboardList"></ol>
+            </article>
+
+            <article class="card panel achievements-card">
+              <div class="panel-heading compact">
+                <h3>Achievements</h3>
+                <p>Unlocked milestones update automatically.</p>
+              </div>
+              <div class="achievement-list" id="achievementList"></div>
+            </article>
+          </section>
+        </section>
+      </main>
+
+      <section class="summary-modal hidden" id="summaryModal" aria-live="polite">
+        <div class="summary-card card">
+          <p class="eyebrow">Session complete</p>
+          <h2 id="summaryTitle">Great run!</h2>
+          <div class="summary-grid">
+            <div>
+              <span>Final score</span>
+              <strong id="summaryScore">0</strong>
+            </div>
+            <div>
+              <span>Accuracy</span>
+              <strong id="summaryAccuracy">0%</strong>
+            </div>
+            <div>
+              <span>Questions answered</span>
+              <strong id="summaryAnswered">0</strong>
+            </div>
+            <div>
+              <span>Best streak</span>
+              <strong id="summaryStreak">0</strong>
+            </div>
+          </div>
+          <div class="summary-actions">
+            <button class="primary-button" id="playAgainButton" type="button">Play again</button>
+            <a class="secondary-button link-button js-feedback" href="index.html">Back to dashboard</a>
+            <button class="secondary-button" id="closeSummaryButton" type="button">Close</button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MentalMath · Progress</title>
+    <meta
+      name="description"
+      content="Review your MentalMath performance, leaderboard standings, achievements, and best scores."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-frame">
+      <aside class="app-sidebar card">
+        <div>
+          <p class="eyebrow">MentalMath</p>
+          <h1 class="sidebar-title">Arcade app</h1>
+          <p class="subtle">Track consistency, streaks, and long-term improvement.</p>
+        </div>
+
+        <nav class="nav-links">
+          <a class="nav-link" data-nav="home" href="index.html">Dashboard</a>
+          <a class="nav-link" data-nav="play" href="play.html">Play</a>
+          <a class="nav-link" data-nav="progress" href="progress.html">Progress</a>
+        </nav>
+
+        <div class="sidebar-panel">
+          <span class="sidebar-label">Milestones</span>
+          <strong id="achievementSummary">0 unlocked</strong>
+          <p class="subtle">Achievements reward accuracy, streaks, speed, and daily play.</p>
+        </div>
+      </aside>
+
+      <main class="app-main">
+        <header class="app-topbar card">
+          <div>
+            <p class="eyebrow">Progress hub</p>
+            <h2>Analytics and records</h2>
+            <p class="subtle">See how your daily rhythm and skill ceiling are improving.</p>
+          </div>
+          <div class="topbar-actions">
+            <button class="icon-button" id="themeToggle" type="button" aria-label="Toggle theme">🌙</button>
+            <button class="icon-button" id="soundToggle" type="button" aria-label="Toggle sound">🔊</button>
+          </div>
+        </header>
+
+        <section class="page-grid progress-grid">
+          <section class="stack gap-lg">
+            <article class="card panel">
+              <div class="panel-heading compact">
+                <h3>Overview</h3>
+                <p>Key signals from your saved runs.</p>
+              </div>
+              <div class="overview-grid four-col" id="overviewMetrics"></div>
+            </article>
+
+            <article class="card panel">
+              <div class="panel-heading compact">
+                <h3>Difficulty records</h3>
+                <p>Best score by challenge level.</p>
+              </div>
+              <div class="bar-group" id="difficultyBars"></div>
+            </article>
+
+            <article class="card panel">
+              <div class="panel-heading compact">
+                <h3>Achievements</h3>
+                <p>Unlocked and upcoming goals.</p>
+              </div>
+              <div class="achievement-list" id="achievementList"></div>
+            </article>
+          </section>
+
+          <section class="stack gap-lg">
+            <article class="card panel leaderboard-card">
+              <div class="panel-heading compact">
+                <h3>Leaderboard</h3>
+                <p>Best sessions stored locally.</p>
+              </div>
+              <ol class="leaderboard-list" id="leaderboardList"></ol>
+            </article>
+
+            <article class="card panel last-run-card">
+              <div class="panel-heading compact">
+                <h3>Last run</h3>
+                <p>Your most recent completed session.</p>
+              </div>
+              <div class="stats-grid" id="lastRunGrid"></div>
+            </article>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="progress.js"></script>
+  </body>
+</html>
