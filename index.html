@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MentalMath – Speed Math Game</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-theme="dark">
+
+  <!-- ══════════════════════════════════════════════
+       HOME SCREEN
+  ══════════════════════════════════════════════ -->
+  <div id="screen-home" class="screen active">
+    <div class="home-container">
+
+      <!-- Logo -->
+      <div class="logo-area">
+        <span class="logo-icon">🧠</span>
+        <h1 class="logo-title">MentalMath</h1>
+        <p class="logo-subtitle">Train Your Brain</p>
+      </div>
+
+      <!-- Game Mode -->
+      <div class="section">
+        <h2 class="section-title">Game Mode</h2>
+        <div class="mode-grid">
+          <button class="mode-btn active" data-mode="classic">
+            <span class="mode-icon">⏱️</span>
+            <span class="mode-name">Classic</span>
+            <span class="mode-desc">60-second sprint</span>
+          </button>
+          <button class="mode-btn" data-mode="daily">
+            <span class="mode-icon">📅</span>
+            <span class="mode-name">Daily</span>
+            <span class="mode-desc">Today's challenge</span>
+          </button>
+          <button class="mode-btn" data-mode="endless">
+            <span class="mode-icon">∞</span>
+            <span class="mode-name">Endless</span>
+            <span class="mode-desc">No time limit</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Difficulty -->
+      <div class="section">
+        <h2 class="section-title">Difficulty</h2>
+        <div class="diff-grid">
+          <button class="diff-btn active" data-diff="easy">Easy</button>
+          <button class="diff-btn" data-diff="medium">Medium</button>
+          <button class="diff-btn" data-diff="hard">Hard</button>
+        </div>
+      </div>
+
+      <!-- Start -->
+      <button id="btn-start" class="btn-primary">▶ Start Game</button>
+
+      <!-- Icon Actions -->
+      <div class="home-footer">
+        <button class="icon-btn" id="btn-leaderboard" title="Leaderboard">🏆</button>
+        <button class="icon-btn" id="btn-achievements" title="Achievements">🎖️</button>
+        <button class="icon-btn" id="btn-analytics" title="Analytics">📊</button>
+        <button class="icon-btn" id="btn-toggle-theme" title="Toggle Theme">🌙</button>
+        <button class="icon-btn" id="btn-toggle-sound" title="Toggle Sound">🔊</button>
+      </div>
+
+      <!-- Best score hint -->
+      <div id="best-score-display" class="best-score"></div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════
+       GAME SCREEN
+  ══════════════════════════════════════════════ -->
+  <div id="screen-game" class="screen">
+
+    <!-- Stats header -->
+    <div class="game-header">
+      <div class="stat-box">
+        <div class="stat-label">Score</div>
+        <div class="stat-value" id="display-score">0</div>
+      </div>
+      <div class="stat-box streak-box">
+        <div class="stat-label">Streak</div>
+        <div class="stat-value" id="display-streak">0</div>
+        <span id="streak-flame" class="streak-flame hidden">🔥</span>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Level</div>
+        <div class="stat-value" id="display-level">1</div>
+      </div>
+    </div>
+
+    <!-- Timer bar (hidden in endless mode) -->
+    <div class="timer-container" id="timer-container">
+      <div class="timer-bar" id="timer-bar"></div>
+      <div class="timer-text" id="timer-text">60</div>
+    </div>
+
+    <!-- Question + answer area -->
+    <div class="question-area">
+      <div id="question-display" class="question-text"></div>
+      <div class="answer-display" id="answer-display">
+        <span id="answer-value">_</span>
+      </div>
+      <div id="feedback-display" class="feedback hidden"></div>
+      <div id="multiplier-display" class="multiplier hidden"></div>
+    </div>
+
+    <!-- Calculator keypad -->
+    <div class="keypad">
+      <button class="key-btn" data-key="7">7</button>
+      <button class="key-btn" data-key="8">8</button>
+      <button class="key-btn" data-key="9">9</button>
+      <button class="key-btn" data-key="4">4</button>
+      <button class="key-btn" data-key="5">5</button>
+      <button class="key-btn" data-key="6">6</button>
+      <button class="key-btn" data-key="1">1</button>
+      <button class="key-btn" data-key="2">2</button>
+      <button class="key-btn" data-key="3">3</button>
+      <button class="key-btn key-action" data-key="back">⌫</button>
+      <button class="key-btn key-zero" data-key="0">0</button>
+      <button class="key-btn key-submit" data-key="submit">✓</button>
+    </div>
+
+    <!-- Quit + question counter -->
+    <div class="game-footer">
+      <button id="btn-quit" class="btn-quit">✕ Quit</button>
+      <div id="questions-counter" class="questions-counter">Q: 0</div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════
+       RESULTS SCREEN
+  ══════════════════════════════════════════════ -->
+  <div id="screen-results" class="screen">
+    <div class="results-container">
+      <div id="results-rank" class="results-rank">⭐</div>
+      <h2 id="results-title" class="results-title">Game Over!</h2>
+
+      <div class="results-score-big" id="results-score">0</div>
+      <div class="results-score-label">points</div>
+
+      <div class="results-stats">
+        <div class="result-stat">
+          <div class="result-stat-value" id="res-correct">0</div>
+          <div class="result-stat-label">Correct</div>
+        </div>
+        <div class="result-stat">
+          <div class="result-stat-value" id="res-accuracy">0%</div>
+          <div class="result-stat-label">Accuracy</div>
+        </div>
+        <div class="result-stat">
+          <div class="result-stat-value" id="res-streak">0</div>
+          <div class="result-stat-label">Best Streak</div>
+        </div>
+        <div class="result-stat">
+          <div class="result-stat-value" id="res-avg-time">0s</div>
+          <div class="result-stat-label">Avg Time</div>
+        </div>
+      </div>
+
+      <div id="new-high-score" class="new-high-score hidden">🏆 New High Score!</div>
+
+      <!-- Achievement badges that were unlocked this round -->
+      <div id="achievement-unlocks" class="achievement-unlocks"></div>
+
+      <div class="results-actions">
+        <button id="btn-play-again" class="btn-primary">Play Again</button>
+        <button id="btn-home" class="btn-secondary">Main Menu</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════
+       LEADERBOARD SCREEN
+  ══════════════════════════════════════════════ -->
+  <div id="screen-leaderboard" class="screen">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h2>🏆 High Scores</h2>
+        <button class="close-btn" id="btn-close-leaderboard">✕</button>
+      </div>
+      <div class="diff-tabs">
+        <button class="tab-btn active" data-tab="easy">Easy</button>
+        <button class="tab-btn" data-tab="medium">Medium</button>
+        <button class="tab-btn" data-tab="hard">Hard</button>
+      </div>
+      <div id="leaderboard-list" class="leaderboard-list"></div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════
+       ACHIEVEMENTS SCREEN
+  ══════════════════════════════════════════════ -->
+  <div id="screen-achievements" class="screen">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h2>🎖️ Achievements</h2>
+        <button class="close-btn" id="btn-close-achievements">✕</button>
+      </div>
+      <div id="achievements-progress" class="achievements-progress"></div>
+      <div id="achievements-grid" class="achievements-grid"></div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════
+       ANALYTICS SCREEN
+  ══════════════════════════════════════════════ -->
+  <div id="screen-analytics" class="screen">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h2>📊 Analytics</h2>
+        <button class="close-btn" id="btn-close-analytics">✕</button>
+      </div>
+      <div id="analytics-content" class="analytics-content"></div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════
+       COUNTDOWN OVERLAY
+  ══════════════════════════════════════════════ -->
+  <div id="countdown-overlay" class="countdown-overlay hidden">
+    <div id="countdown-number" class="countdown-number">3</div>
+  </div>
+
+
+  <script src="js/sounds.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>
